@@ -11,6 +11,8 @@ colors :
 Cream                   Coral                   Dusty Rose              Rose Quartz
 #F9F1F0 255, 253, 208   #F79489 255, 127, 80    #F8AFA6 220, 174, 150	#FADCD9 247, 202, 201
 """
+_os = "windows" # default is windows
+
 def main():
     load = (screen, pygame, clock, font, hud) = init()
     hud.main_menu()
@@ -32,7 +34,12 @@ def game(load):
     (screen, pygame, clock, font, hud) = load
     #physics
     
-    bg_image = pygame.image.load("images\game_bg.png")
+    if _os == "windows":
+        bg_image = pygame.image.load("images\game_bg.png")      # on windows
+    
+    if _os == "linux":
+        bg_image = pygame.image.load("./images/game_bg.png")    # on linux
+    
     image_rect = bg_image.get_rect()
     image_rect.left, image_rect.top = [0, 0]
     
@@ -82,17 +89,26 @@ def game(load):
         clock.tick(120)
 
 if __name__ == "__main__":
-    import cProfile
-    cProfile.run("main()", "output.dat")
+    from sys import platform
+
+    if platform == "linux" or platform == "linux2":
+        _os = "linux"
     
-    import pstats
-    from pstats import SortKey
+    if platform == "win32":
+        _os = "windows"
     
-    with open("output_time.txt", "w") as f:
-        p = pstats.Stats("output.dat", stream=f)
-        p.sort_stats("time").print_stats()
-        
-    with open("output_calls.txt", "w") as f:
-        p = pstats.Stats("output.dat", stream=f)
-        p.sort_stats("calls").print_stats()
+    main()
+#    import cProfile
+#    cProfile.run("main()", "output.dat")
+#   
+#    import pstats
+#    from pstats import SortKey
+#    
+#    with open("output_time.txt", "w") as f:
+#        p = pstats.Stats("output.dat", stream=f)
+#        p.sort_stats("time").print_stats()
+#        
+#    with open("output_calls.txt", "w") as f:
+#        p = pstats.Stats("output.dat", stream=f)
+#        p.sort_stats("calls").print_stats()
 
