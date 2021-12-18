@@ -1,5 +1,5 @@
 # Watermelon_game
 
 lib:
-pygame
-pymunk
+- pygame
+- pymunk
